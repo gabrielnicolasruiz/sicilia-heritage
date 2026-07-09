@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sicily: Cultural Heritage & Preservation Hub</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS for the Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        /* Style for the interactive map container */
+        #map {
+            height: 480px;
+            width: 100%;
+            border-radius: 0.75rem;
+            z-index: 1;
+        }
+        .strategy-content { display: none; }
+        .strategy-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased">
+
+    <!-- Header / Navigation -->
+    <header class="bg-[#0f2217] text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                <i class="fa-solid fa-gopuram text-amber-400 text-2xl"></i>
+                <span class="text-xl font-serif font-bold tracking-wide text-amber-100">SICILY HERITAGE</span>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
+                <button onclick="switchTab('heritage')" class="nav-btn px-4 py-2 rounded transition bg-amber-500 text-[#0f2217] font-semibold" id="btn-heritage">Culture</button>
+                <button onclick="switchTab('itinerary')" class="nav-btn px-4 py-2 rounded transition hover:bg-emerald-900 text-stone-300" id="btn-itinerary">Itinerary</button>
+                <button onclick="switchTab('preservation')" class="nav-btn px-4 py-2 rounded transition hover:bg-emerald-900 text-stone-300" id="btn-preservation">Preservation & Action</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="relative bg-[#132d1e] text-white py-20 px-6 text-center border-b-4 border-amber-500">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <span class="text-amber-400 font-serif tracking-widest text-sm uppercase font-bold">Discover the Soul of the Mediterranean</span>
+            <h1 class="text-4xl md:text-6xl font-serif font-extrabold text-amber-100 leading-tight">Sicily: A Tapestry of Art, Legends, & Culinary Mastery</h1>
+            <p class="text-lg text-stone-300 max-w-2xl mx-auto">
+                Step into a crossroad of civilizations. Explore ancient Greek structures, immerse yourself in centuries-old puppet theaters, and witness a living culture fighting to preserve its timeless roots.
+            </p>
+            <div class="pt-4">
+                <button onclick="switchTab('itinerary')" class="bg-amber-500 hover:bg-amber-400 text-[#0f2217] font-bold px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105">
+                    Explore the 5-Day Itinerary <i class="fa-solid fa-map-location-dot ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN INTERACTIVE CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+
+        <!-- TAB 1: CULTURAL PROFILE (Now with Images for every item) -->
+        <div id="tab-heritage" class="tab-content active space-y-16">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h2 class="text-3xl font-serif font-bold text-emerald-950">The Culture of Sicily</h2>
+                <p class="text-stone-600">Sicily is an island in the Mediterranean Sea, located in southern Italy, acting as a historical bridge where multiple empires left indelible artistic expressions.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Artistic Expressions & Folklore -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-100 space-y-6">
+                    <div class="flex items-center space-x-3 text-emerald-800">
+                        <i class="fa-solid fa-masks-theater text-3xl text-amber-500"></i>
+                        <h3 class="text-2xl font-serif font-bold">Artistic Expressions</h3>
+                    </div>
+                    <hr class="border-stone-200">
+                    <div class="space-y-6">
+                        <div class="bg-stone-50 rounded-lg overflow-hidden border border-stone-100">
+                            <img src="https://ich.unesco.org/img/photo/thumb/00185-BIG.jpg" alt="Puppet Theatre" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="font-bold text-emerald-900 mb-1">Opera dei Pupi</h4>
+                                <p class="text-sm text-stone-600">Handcrafted wooden puppets clad in heavy, real brass armor re-enact chivalric romances, mainly showcasing the epic stories of Charlemagne and his valiant knights.</p>
+                            </div>
+                        </div>
+                        <div class="bg-stone-50 rounded-lg overflow-hidden border border-stone-100">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-ADCUA-gVh5HfW6vfPJLTUKaKNc3TuhtGg1iaGidjX6HbKmpxwH3jZMur&s=10" alt="Caltagirone Ceramics" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="font-bold text-emerald-900 mb-1">Caltagirone Ceramics & Teste di Moro</h4>
+                                <p class="text-sm text-stone-600">You simply cannot walk down any street in Sicily without seeing beautiful, intricately painted ceramic heads used as magnificent flower and plant pots accenting balconies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gastronomy -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-100 space-y-6">
+                    <div class="flex items-center space-x-3 text-emerald-800">
+                        <i class="fa-solid fa-utensils text-3xl text-amber-500"></i>
+                        <h3 class="text-2xl font-serif font-bold">Gastronomy</h3>
+                    </div>
+                    <hr class="border-stone-200">
+                    <p class="text-stone-600 mb-4">Sicilian culinary design is celebrated as one of the most vibrant kitchens in Italy:</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Arancini -->
+                        <div class="bg-stone-50 border border-stone-200 rounded-lg overflow-hidden flex flex-col">
+                            <img src="https://www.giallozafferano.es/images/3-310/Arancini-de-arroz_1200x800.jpg" alt="Arancini" class="w-full h-28 object-cover">
+                            <div class="p-3 flex-1">
+                                <strong class="text-emerald-900 block mb-1 text-sm">Arancini</strong>
+                                <span class="text-stone-600 text-xs">Stuffed, crispy golden rice balls filled with ragù or cheese.</span>
+                            </div>
+                        </div>
+                        <!-- Pasta alla Norma -->
+                        <div class="bg-stone-50 border border-stone-200 rounded-lg overflow-hidden flex flex-col">
+                            <img src="https://imag.bonviveur.com/pasta-alla-norma-lista-para-tomar.jpg" alt="Pasta alla Norma" class="w-full h-28 object-cover">
+                            <div class="p-3 flex-1">
+                                <strong class="text-emerald-900 block mb-1 text-sm">Pasta alla Norma</strong>
+                                <span class="text-stone-600 text-xs">Classic pasta cooked beautifully with eggplant, tomatoes, and ricotta.</span>
+                            </div>
+                        </div>
+                        <!-- Cannoli -->
+                        <div class="bg-stone-50 border border-stone-200 rounded-lg overflow-hidden flex flex-col">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThT-qN5xQs1ybJP-GJRrYn1zjhimU7KAnhZDxNOHi1LQ&s=10" alt="Cannoli" class="w-full h-28 object-cover">
+                            <div class="p-3 flex-1">
+                                <strong class="text-emerald-900 block mb-1 text-sm">Cannoli</strong>
+                                <span class="text-stone-600 text-xs">Legendary pastry tubes filled elegantly with sweet, velvety ricotta cream.</span>
+                            </div>
+                        </div>
+                        <!-- Cassata -->
+                        <div class="bg-stone-50 border border-stone-200 rounded-lg overflow-hidden flex flex-col">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjTi9Nn8kl3QxUO4lZcg4rgpC4aE2S0BOCQK1H0-kO9R4hVF1Sd0kvBa0&s=10" alt="Sicilian Cassata" class="w-full h-28 object-cover">
+                            <div class="p-3 flex-1">
+                                <strong class="text-emerald-900 block mb-1 text-sm">Sicilian Cassata</strong>
+                                <span class="text-stone-600 text-xs">Traditional round sponge cake moistened with fruit juices and sweet ricotta.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Traditions & Customs -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-100 space-y-4">
+                    <div class="flex items-center space-x-3 text-emerald-800">
+                        <i class="fa-solid fa-users text-2xl text-amber-500"></i>
+                        <h3 class="text-xl font-serif font-bold">Traditions & Customs</h3>
+                    </div>
+                    <hr class="border-stone-200">
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-center space-x-4 bg-stone-50 p-2 rounded-lg border border-stone-100">
+                            <img src="https://static.wixstatic.com/media/2a46f1_0fa40320bca4470493f2894d05fc29f9~mv2.jpg/v1/fill/w_1000,h_739,al_c,q_85,usm_0.66_1.00_0.01/2a46f1_0fa40320bca4470493f2894d05fc29f9~mv2.jpg" alt="Feast" class="w-16 h-16 rounded object-cover shadow-sm">
+                            <p class="text-stone-600"><strong class="text-emerald-900">Feast of Saint Agatha:</strong> An intense, world-famous religious festival drawing millions together in Catania.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 bg-stone-50 p-2 rounded-lg border border-stone-100">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUyb0D0oOHtEvmJvqwTgxcpHr9Klad5h_vt2QOYRVFA-yxqW2KywVdcn4&s=10" alt="Processions" class="w-16 h-16 rounded object-cover shadow-sm">
+                            <p class="text-stone-600"><strong class="text-emerald-900">Holy Week Processions:</strong> Dramatic, solemn structural processions reflecting centuries of historical devotion.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 bg-stone-50 p-2 rounded-lg border border-stone-100">
+                            <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=200&q=80" alt="Markets" class="w-16 h-16 rounded object-cover shadow-sm">
+                            <p class="text-stone-600"><strong class="text-emerald-900">Open-Air Markets:</strong> Sensory explosions found in historic alleys filled with energetic local merchants.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 bg-stone-50 p-2 rounded-lg border border-stone-100">
+                            <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=200&q=80" alt="Family" class="w-16 h-16 rounded object-cover shadow-sm">
+                            <p class="text-stone-600"><strong class="text-emerald-900">Family & Community:</strong> Deep structural reliance on family networks and warm community gatherings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Stories -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-100 space-y-4">
+                    <div class="flex items-center space-x-3 text-emerald-800">
+                        <i class="fa-solid fa-book-open text-2xl text-amber-500"></i>
+                        <h3 class="text-xl font-serif font-bold">Local Lore</h3>
+                    </div>
+                    <hr class="border-stone-200">
+                    <p class="text-stone-600 text-sm">Click below to read the classic oral histories passed down through generations:</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="openLegend('colapesce')" class="flex-1 flex flex-col items-center bg-stone-100 hover:bg-amber-100 p-3 rounded transition border-l-4 border-amber-500 group">
+                            <img src="https://www.sicilyuncovered.com/wp-content/uploads/2015/08/colapesce1.jpg" alt="Ocean" class="w-12 h-12 rounded-full object-cover mb-2 border-2 border-transparent group-hover:border-amber-400">
+                            <span class="font-bold text-sm block text-emerald-950 text-center">Legend of Colapesce</span>
+                        </button>
+                        <button onclick="openLegend('moro')" class="flex-1 flex flex-col items-center bg-stone-100 hover:bg-amber-100 p-3 rounded transition border-l-4 border-amber-500 group">
+                            <img src="https://vicioilmastropastaio.com/wp-content/uploads/2024/06/Hunt_William_Holman_%E2%80%94_Isabella_and_the_Pot_of_Basil_%E2%80%94_1867.jpg" alt="Vase" class="w-12 h-12 rounded-full object-cover mb-2 border-2 border-transparent group-hover:border-amber-400">
+                            <span class="font-bold text-sm block text-emerald-950 text-center">Teste di Moro</span>
+                        </button>
+                    </div>
+                    <div id="legend-viewer" class="hidden mt-4 p-4 bg-amber-50/70 border border-amber-200 rounded-lg text-sm text-stone-700">
+                        <h4 id="legend-title" class="font-bold text-emerald-900 mb-1"></h4>
+                        <p id="legend-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: INTERACTIVE ITINERARY -->
+        <div id="tab-itinerary" class="tab-content space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <h2 class="text-3xl font-serif font-bold text-emerald-950">Virtual Cultural Itinerary</h2>
+                <p class="text-stone-600">Follow our curated 5-day journey across Sicily. Click each day to locate it on the interactive map, view activities, and explore historical photographs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 space-y-2 max-h-[500px] overflow-y-auto">
+                    <h3 class="font-serif font-bold text-md text-emerald-900 mb-2 px-1 flex items-center justify-between">
+                        <span>Itinerary Route</span>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-mono px-2 py-0.5 rounded">5 Days</span>
+                    </h3>
+                    <button onclick="selectStop(1)" id="stop-btn-1" class="stop-card w-full p-3 text-left rounded-lg transition border-2 border-emerald-800 bg-emerald-50/50 flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center font-bold font-mono text-xs shrink-0">D1</span>
+                        <div class="truncate"><span class="font-bold block text-sm text-emerald-950">Palermo</span><span class="text-[11px] text-stone-500">Lively streets & local cuisine</span></div>
+                    </button>
+                    <button onclick="selectStop(2)" id="stop-btn-2" class="stop-card w-full p-3 text-left rounded-lg transition border border-stone-200 hover:bg-stone-50 flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-stone-300 text-stone-700 flex items-center justify-center font-bold font-mono text-xs shrink-0">D2</span>
+                        <div class="truncate"><span class="font-bold block text-sm text-stone-800">Cefalù</span><span class="text-[11px] text-stone-500">Hidden gem & stunning beaches</span></div>
+                    </button>
+                    <button onclick="selectStop(3)" id="stop-btn-3" class="stop-card w-full p-3 text-left rounded-lg transition border border-stone-200 hover:bg-stone-50 flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-stone-300 text-stone-700 flex items-center justify-center font-bold font-mono text-xs shrink-0">D3</span>
+                        <div class="truncate"><span class="font-bold block text-sm text-stone-800">Mt. Etna & Taormina</span><span class="text-[11px] text-stone-500">Volcano & panoramic views</span></div>
+                    </button>
+                    <button onclick="selectStop(4)" id="stop-btn-4" class="stop-card w-full p-3 text-left rounded-lg transition border border-stone-200 hover:bg-stone-50 flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-stone-300 text-stone-700 flex items-center justify-center font-bold font-mono text-xs shrink-0">D4</span>
+                        <div class="truncate"><span class="font-bold block text-sm text-stone-800">Syracuse</span><span class="text-[11px] text-stone-500">Ortigia & cultural heritage</span></div>
+                    </button>
+                    <button onclick="selectStop(5)" id="stop-btn-5" class="stop-card w-full p-3 text-left rounded-lg transition border border-stone-200 hover:bg-stone-50 flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-stone-300 text-stone-700 flex items-center justify-center font-bold font-mono text-xs shrink-0">D5</span>
+                        <div class="truncate"><span class="font-bold block text-sm text-stone-800">Departure</span><span class="text-[11px] text-stone-500">Unforgettable memories</span></div>
+                    </button>
+                </div>
+
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="shadow-md border border-stone-200 bg-stone-200 rounded-xl overflow-hidden">
+                        <div id="map"></div>
+                    </div>
+                    <div id="stop-display-box" class="bg-white p-6 rounded-xl shadow-sm border-2 border-amber-500 min-h-[320px] flex flex-col justify-between space-y-4">
+                        <!-- Dynamic details injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: PRESERVATION & ACTION -->
+        <div id="tab-preservation" class="tab-content space-y-12">
+            <!-- (Content remains unchanged to preserve length, you can copy the preservation tab from the previous response if you need it complete here) -->
+<!-- SECTION 4: PRESERVATION & VISIBILITY CHALLENGES -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-3 border-b-2 border-amber-500 pb-2">
+                    <span class="bg-amber-500 text-[#0f2217] w-8 h-8 rounded-full flex items-center justify-center font-bold font-mono">4</span>
+                    <h3 class="text-2xl font-serif font-bold text-emerald-950">Preservation & Visibility Challenges</h3>
+                </div>
+                <p class="text-stone-700 leading-relaxed max-w-4xl">
+                    Despite its richness, Sicilian cultural heritage faces significant hurdles to its survival. Addressing these cultural preservation challenges requires moving from reactive defense to proactive, modern integration. If we treat heritage purely like a museum artifact, it dies when the museum loses funding. To save it, it needs to be economically viable and socially relevant to the next generation.
+                </p>
+                <!-- 3-Column Threat Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                    <!-- Threat 1 -->
+                    <div class="bg-rose-50/60 border border-rose-200 p-6 rounded-xl space-y-3 shadow-sm">
+                        <div class="flex items-center space-x-2 text-rose-800 font-serif font-bold">
+                            <i class="fa-solid fa-hourglass-end text-xl text-rose-600"></i>
+                            <h4>The Decline of Craft Dynasties</h4>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Both puppet theater and ceramic shaping require years of master-to-apprentice training. Young Sicilians often emigrate due to economic stagnation, leaving very few people behind to inherit the workshops of dying masters (<em>Maestri</em>).
+                        </p>
+                    </div>
+                    <!-- Threat 2 -->
+                    <div class="bg-rose-50/60 border border-rose-200 p-6 rounded-xl space-y-3 shadow-sm">
+                        <div class="flex items-center space-x-2 text-rose-800 font-serif font-bold">
+                            <i class="fa-solid fa-comments-slash text-xl text-rose-600"></i>
+                            <h4>Language Erosion</h4>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Many young Sicilians understand the traditional Sicilian language (which is a distinct language with Arabic and Norman influences, not just a dialect of Italian) but rarely speak it, threatening the oral preservation of regional storytelling.
+                        </p>
+                    </div>
+                    <!-- Threat 3 -->
+                    <div class="bg-rose-50/60 border border-rose-200 p-6 rounded-xl space-y-3 shadow-sm">
+                        <div class="flex items-center space-x-2 text-rose-800 font-serif font-bold">
+                            <i class="fa-solid fa-store-slash text-xl text-rose-600"></i>
+                            <h4>Mass Tourism vs. Authenticity</h4>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Popular culture (like <em>The White Lotus</em> series or <em>The Godfather</em> legacy) brings millions of tourists. However, this often prioritizes standardized, mass-produced versions of Sicilian culture (cheap plastic Teste di Moro imported from abroad) over supporting authentic, local artisans.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+<div class="bg-white border border-stone-200 rounded-xl p-8 shadow-sm space-y-8">
+    <div class="space-y-2">
+        <span class="text-xs font-mono font-bold tracking-widest text-emerald-800 uppercase"></span>
+        <h3 class="text-2xl font-serif font-bold text-emerald-950">Tailored Protection Solutions</h3>
+        <p class="text-sm text-stone-500">Click on any of the core strategic areas below to explore our tactical preservation blueprints.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-2 border-b border-stone-200 pb-px">
+        <button onclick="switchStrategy(1)" id="strat-btn-1" class="strat-btn flex-1 py-3 px-4 font-serif font-bold text-sm text-center border-b-2 border-emerald-800 text-emerald-950 bg-stone-50 rounded-t-lg transition">
+            1. Saving Craft Dynasties
+        </button>
+        <button onclick="switchStrategy(2)" id="strat-btn-2" class="strat-btn flex-1 py-3 px-4 font-serif font-bold text-sm text-center border-b-2 border-transparent text-stone-500 hover:text-emerald-900 transition">
+            2. Reversing Language Erosion
+        </button>
+        <button onclick="switchStrategy(3)" id="strat-btn-3" class="strat-btn flex-1 py-3 px-4 font-serif font-bold text-sm text-center border-b-2 border-transparent text-stone-500 hover:text-emerald-900 transition">
+            3. Combating Mass Tourism
+        </button>
+    </div>
+
+    <div id="strat-content-1" class="strategy-content space-y-6">
+        <div class="bg-emerald-50/50 p-4 rounded-lg border border-emerald-100 text-sm text-emerald-900 font-medium">
+            <i class="fa-solid fa-building-columns mr-2"></i> <strong>Core Objective:</strong> Institutionalize the Apprentice Model. Right now, the knowledge of the Maestri is locked in private workshops. If a master has no children interested in the craft, that lineage ends.
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-amber-100 text-amber-900 text-[10px] font-mono font-bold rounded">FINANCIAL AID</span>
+                <h5 class="font-bold text-stone-900 text-sm">State-Subsidized "Cultural Stipends"</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">The Italian government and EU regional funds should offer paid fellowships to young people who commit to a 2- to 3-year full-time apprenticeship under registered Sicilian artisans. This solves economic stagnation by paying a living wage to learn.</p>
+            </div>
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-900 text-[10px] font-mono font-bold rounded">STATUS ELEVATION</span>
+                <h5 class="font-bold text-stone-900 text-sm">The "Living National Treasure"</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Modeled after Japan's system, the state should financially support aging masters specifically to teach, elevating their social status to elite cultural guardians and funding dedicated municipal schools for ceramics and puppetry.</p>
+            </div>
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-900 text-[10px] font-mono font-bold rounded">MODERN BIZ</span>
+                <h5 class="font-bold text-stone-900 text-sm">Modernizing the Business Model</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Pair artisans with digital marketing and e-commerce students. A master puppeteer might know how to forge brass armor, but a 22-year-old digital native knows how to build an international Shopify storefront and pipeline.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="strat-content-2" class="strategy-content hidden space-y-6">
+        <div class="bg-emerald-50/50 p-4 rounded-lg border border-emerald-100 text-sm text-emerald-900 font-medium">
+            <i class="fa-solid fa-mobile-screen mr-2"></i> <strong>Core Objective:</strong> Gamification & Digital Archiving. Language only survives if it is useful, fun, or expressive for the people using it. Forcing youth to memorize old poetry rarely works.
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-900 text-[10px] font-mono font-bold rounded">GAMIFICATION</span>
+                <h5 class="font-bold text-stone-900 text-sm">Digital Storytelling & Games</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Fund the creation of apps, video games, or interactive audiobooks voiced entirely in Sicilian. Imagine a narrative game built around the legend of Colapesce or the Sicilian Vespers, where players must understand Sicilian dialogue to progress.</p>
+            </div>
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-900 text-[10px] font-mono font-bold rounded">MEDIA STIGMA</span>
+                <h5 class="font-bold text-stone-900 text-sm">Subtitled "Dialect Theater"</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Support independent Sicilian filmmakers, musicians, and podcasters. When regional artists use the language to create contemporary rap, indie rock, or modern drama, it strips away the stigma of Sicilian being an old, rural dialect.</p>
+            </div>
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-orange-100 text-orange-900 text-[10px] font-mono font-bold rounded">EARLY ED</span>
+                <h5 class="font-bold text-stone-900 text-sm">"Maternal Language" Hours</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">While standard Italian is mandatory for schools, introducing optional local folklore and language hours in primary schools ensures children develop an active ear for the phonetics and vocabulary early on.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="strat-content-3" class="strategy-content hidden space-y-6">
+        <div class="bg-emerald-50/50 p-4 rounded-lg border border-emerald-100 text-sm text-emerald-900 font-medium">
+            <i class="fa-solid fa-map-location-dot mr-2"></i> <strong>Core Objective:</strong> Geographic Protection & Smart Travel. You cannot stop mass tourism, but you can channel it away from cheap consumerism and toward ethical cultural exchange.
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-red-100 text-red-900 text-[10px] font-mono font-bold rounded">LEGAL IP</span>
+                <h5 class="font-bold text-stone-900 text-sm">Strict "Made in Sicily" Status</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Just like Champagne has protected status, the government should regulate items like Teste di Moro. It should be illegal to sell a ceramic head labeled "Sicilian Art" if it was mass-produced overseas. Authentic shops should carry scannable QR certificates.</p>
+            </div>
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-teal-100 text-teal-900 text-[10px] font-mono font-bold rounded">ETHICAL TRAVEL</span>
+                <h5 class="font-bold text-stone-900 text-sm">"Impact" over "Cruise" Tourism</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Shift the model away from single-day cruise ship crowds who buy cheap plastic souvenirs. Instead, promote and tax-incentivize longer-stay, experiential tourism—such as week-long ceramic retreats or puppetry workshops.</p>
+            </div>
+            <div class="space-y-2">
+                <span class="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-900 text-[10px] font-mono font-bold rounded">TECH DISCOVERY</span>
+                <h5 class="font-bold text-stone-900 text-sm">Artisan-Map Aggregators</h5>
+                <p class="text-xs text-stone-600 leading-relaxed">Create and heavily advertise official, open-source digital maps (backed by the tourism board) that guide travelers directly to the hidden, authentic workshops of local masters, bypassing the tourist-trap souvenir stalls.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Multimedia Feature Row: Video Feature -->
+<div class="bg-stone-900 text-white p-6 md:p-8 rounded-2xl shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6">
+    <div class="space-y-4 lg:max-w-md">
+        <div class="space-y-1">
+            <span class="text-xs font-mono uppercase tracking-widest text-amber-400"></span>
+            <h3 class="text-xl md:text-2xl font-bold font-serif text-amber-100">Short video to learn more about Sicily</h3>
+        </div>
+        <p class="text-stone-400 text-sm leading-relaxed">
+            By watching this video you can learn more about this beautiful island and its inhabitants
+        </p>
+        <!-- Botón de respaldo por si la inserción está bloqueada por el autor -->
+        <div class="pt-2">
+            <a href="https://www.youtube.com/watch?v=nuoWy10Ajjk" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs bg-stone-800 hover:bg-stone-700 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-lg transition">
+                <i class="fa-brands fa-youtube text-red-500 text-sm"></i>
+                <span>Watch directly on YouTube</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70"></i>
+            </a>
+        </div>
+    </div>
+    <div class="w-full lg:max-w-xl aspect-video rounded-xl overflow-hidden shadow-inner border border-stone-800 bg-stone-950">
+        <iframe 
+            class="w-full h-full" 
+            src="https://www.youtube.com/embed/nuoWy10Ajjk" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0f2217] text-stone-400 py-12 text-center text-xs border-t border-emerald-900">
+        <p>&copy; 2026 Academic Cultural Preservation Framework - Sicily Interactive Web Project.</p>
+    </footer>
+
+    <!-- Leaflet JS Map Engine -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        let map;
+        let markers = {};
+        
+        const stopCoordinates = { 
+            1: [38.1157, 13.3614], 2: [38.0384, 14.0225], 3: [37.8524, 15.2853], 4: [37.0755, 15.2866], 5: [37.4673, 15.0658]  
+        };
+
+        function initMap() {
+            map = L.map('map').setView([37.6000, 14.3000], 8);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19, attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+
+            markers[1] = L.marker(stopCoordinates[1]).addTo(map).bindPopup("<b>Day 1: Palermo</b>");
+            markers[2] = L.marker(stopCoordinates[2]).addTo(map).bindPopup("<b>Day 2: Cefalù</b>");
+            markers[3] = L.marker(stopCoordinates[3]).addTo(map).bindPopup("<b>Day 3: Mt. Etna & Taormina</b>");
+            markers[4] = L.marker(stopCoordinates[4]).addTo(map).bindPopup("<b>Day 4: Syracuse</b>");
+            markers[5] = L.marker(stopCoordinates[5]).addTo(map).bindPopup("<b>Day 5: Departure</b>");
+
+            Object.keys(markers).forEach(id => { markers[id].on('click', () => { selectStop(Number(id)); }); });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-[#0f2217]', 'font-semibold');
+                btn.classList.add('hover:bg-emerald-900', 'text-stone-300');
+            });
+            document.getElementById('btn-' + tabId).classList.add('bg-amber-500', 'text-[#0f2217]', 'font-semibold');
+
+            if (tabId === 'itinerary') {
+                setTimeout(() => { if (!map) { initMap(); } else { map.invalidateSize(); } selectStop(1); }, 100);
+            }
+        }
+function switchStrategy(stratId) {
+    // 1. Ocultar absolutamente todos los contenidos de estrategias de forma segura
+    document.querySelectorAll('.strategy-content').forEach(content => {
+        content.style.display = 'none'; // Fuerza el ocultamiento
+        content.classList.add('hidden'); 
+    });
+    
+    // 2. Mostrar explícitamente el contenido seleccionado
+    const activeContent = document.getElementById('strat-content-' + stratId);
+    if (activeContent) {
+        activeContent.style.display = 'block'; // Fuerza la visualización del texto
+        activeContent.classList.remove('hidden');
+    }
+
+    // 3. Resetear el diseño visual de los botones (pestañas superiores)
+    document.querySelectorAll('.strat-btn').forEach(btn => {
+        btn.classList.remove('border-emerald-800', 'text-emerald-950', 'bg-stone-50');
+        btn.classList.add('border-transparent', 'text-stone-500', 'hover:text-emerald-900');
+    });
+    
+    // 4. Activar visualmente el botón seleccionado
+    const activeBtn = document.getElementById('strat-btn-' + stratId);
+    if (activeBtn) {
+        activeBtn.classList.remove('border-transparent', 'text-stone-500', 'hover:text-emerald-900');
+        activeBtn.classList.add('border-emerald-800', 'text-emerald-950', 'bg-stone-50');
+    }
+}
+
+        const stopsContent = {
+            1: `<div class="space-y-4">
+                    <div class="space-y-1">
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-600">Day 1 &bull; Destination Hub</span>
+                        <h3 class="text-2xl font-serif font-bold text-emerald-950">Palermo</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed">Explore Palermo’s rich cultural heritage, lively streets, and delicious local cuisine while enjoying its vibrant atmosphere.</p>
+                    </div>
+                    <div class="w-full h-44 rounded-lg overflow-hidden shadow-inner border border-stone-100 bg-stone-100">
+                        <img src="https://static.independent.co.uk/2023/06/06/16/iStock-1154385175.jpg?quality=75&width=1368&crop=3%3A2%2Csmart&auto=webp" alt="Palermo Cathedral Architecture" class="w-full h-full object-cover">
+                    </div>
+                </div>`,
+            2: `<div class="space-y-4">
+                    <div class="space-y-1">
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-600">Day 2 &bull; Coastal Retreat</span>
+                        <h3 class="text-2xl font-serif font-bold text-emerald-950">Cefalù</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed">Discover this hidden gem with stunning beaches, charming streets, breathtaking views, and a peaceful atmosphere.</p>
+                    </div>
+                    <div class="w-full h-44 rounded-lg overflow-hidden shadow-inner border border-stone-100 bg-stone-100">
+                        <img src="https://emmaeatsandexplores.com/wp-content/uploads/2021/01/Cefalu-12.jpg" alt="Cefalù Coastline and Beaches" class="w-full h-full object-cover">
+                    </div>
+                </div>`,
+            3: `<div class="space-y-4">
+                    <div class="space-y-1">
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-600">Day 3 &bull; Volcano & Ruins</span>
+                        <h3 class="text-2xl font-serif font-bold text-emerald-950">Mount Etna & Taormina</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed">Experience the breathtaking landscapes of Mount Etna and the historic beauty of Taormina with unforgettable panoramic views.</p>
+                    </div>
+                    <div class="w-full h-44 rounded-lg overflow-hidden shadow-inner border border-stone-100 bg-stone-100">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtsibS5K_2rKMpIsctMGR2DOm1196o0slwctpYWocuvIpt8XhrgG1lT3o&s=10" alt="Taormina Ancient Theatre View" class="w-full h-full object-cover">
+                    </div>
+                </div>`,
+            4: `<div class="space-y-4">
+                    <div class="space-y-1">
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-600">Day 4 &bull; Historical Core</span>
+                        <h3 class="text-2xl font-serif font-bold text-emerald-950">Syracuse</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed">Immerse yourself in Sicily’s cultural heritage while exploring Ortigia, the archaeological park, and authentic local traditions.</p>
+                    </div>
+                    <div class="w-full h-44 rounded-lg overflow-hidden shadow-inner border border-stone-100 bg-stone-100">
+                        <img src="https://excurzilla.com/blog/uploads/public/20240206/syracuse-sicily2_gQYbUi.jpeg" alt="Syracuse Ortigia Architecture" class="w-full h-full object-cover">
+                    </div>
+                </div>`,
+            5: `<div class="space-y-4">
+                    <div class="space-y-1">
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-600">Day 5 &bull; Farewell Journey</span>
+                        <h3 class="text-2xl font-serif font-bold text-emerald-950">Departure</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed">Enjoy your last moments in Sicily before returning home with unforgettable memories, authentic souvenirs, and local experiences.</p>
+                    </div>
+                    <div class="w-full h-44 rounded-lg overflow-hidden shadow-inner border border-stone-100 bg-stone-100">
+                        <img src="https://images.trvl-media.com/place/6182482/8c5c31fc-ff5b-4e2b-8c24-3524d6dda0ca.jpg" alt="Mediterranean Sea Horizon" class="w-full h-full object-cover">
+                    </div>
+                </div>`
+        };
+
+        function selectStop(stopId) {
+            document.getElementById('stop-display-box').innerHTML = stopsContent[stopId];
+            document.querySelectorAll('.stop-card').forEach(card => {
+                card.classList.remove('border-emerald-800', 'bg-emerald-50/50');
+                card.classList.add('border-stone-200');
+                const badge = card.querySelector('span');
+                if(badge) { card.classList.remove('bg-emerald-800', 'text-white'); badge.classList.add('bg-stone-300', 'text-stone-700'); }
+            });
+            
+            const activeCard = document.getElementById('stop-btn-' + stopId);
+            activeCard.classList.remove('border-stone-200');
+            activeCard.classList.add('border-emerald-800', 'bg-emerald-50/50');
+            const activeBadge = activeCard.querySelector('span');
+            if(activeBadge) { activeBadge.classList.remove('bg-stone-300', 'text-stone-700'); activeBadge.classList.add('bg-emerald-800', 'text-white'); }
+
+            if (map && stopCoordinates[stopId]) {
+                map.flyTo(stopCoordinates[stopId], 10, { animate: true, duration: 1.2 });
+                markers[stopId].openPopup();
+            }
+        }
+
+        window.onload = function() {
+            // Default tab is now heritage based on your request, so we don't init map immediately unless it's active
+            if(document.getElementById('tab-itinerary').classList.contains('active')) {
+                initMap();
+                selectStop(1);
+            }
+        };
+
+        const legendsData = {
+            colapesce: { title: "The Legend of Colapesce", text: "While diving deep into the expansive seas, Colapesce discovered that Sicily rested on three columns, but the one under Messina was crumbling away. He chose to stay underwater forever to hold up the heavy weight of the island on his shoulders." },
+            moro: { title: "The Tragic Origin of the Teste di Moro", text: "A beautiful local girl cut off her unfaithful lover's head while he slept, turning it into a beautiful vase filled with sweet basil on her balcony, which grew so lush it inspired ceramic copies." }
+        };
+        function openLegend(id) {
+            const box = document.getElementById('legend-viewer');
+            document.getElementById('legend-title').textContent = legendsData[id].title;
+            document.getElementById('legend-text').innerHTML = legendsData[id].text;
+            box.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
